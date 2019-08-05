@@ -171,12 +171,12 @@ endif
 ifeq ($(SYSTYPE),"Singularity")
 CC       =  mpiccg
 OPTIMIZE =  -Wall -g -O3 -march=native -mtune=native
-# GSL_INCL =  -I/afs/rzg/u/vrs/gsl_linux_gcc3.2/include
-# GSL_LIBS =  -L/afs/rzg/u/vrs/gsl_linux_gcc3.2/lib
-# FFTW_INCL=  -I/afs/rzg/u/vrs/fftw_linux_gcc3.2/include
-# FFTW_LIBS=  -L/afs/rzg/u/vrs/fftw_linux_gcc3.2/lib  
-# HDF5INCL =  -I/afs/rzg/u/vrs/hdf5_linux/include
-# HDF5LIB  =  -L/afs/rzg/u/vrs/hdf5_linux/lib -static  -lhdf5 -L/afs/rzg/u/vrs/zlib_linux/lib -lz 
+GSL_INCL =
+GSL_LIBS =
+FFTW_INCL=
+FFTW_LIBS=
+HDF5INCL =
+HDF5LIB  =
 endif
 
 

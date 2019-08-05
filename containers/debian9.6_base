@@ -2,7 +2,7 @@ BootStrap: docker
 From: debian:9.6
 
 %help
-    Build Fast-Gadget
+    Build base container for Fast-Gadget
 
 %post
     # get standard packages
@@ -10,7 +10,9 @@ From: debian:9.6
     apt-get -y install build-essential
     apt-get -y install gcc-6 g++-6 libstdc++6 lsb-release
     apt-get -y install cmake git wget vim tar
-    apt-get -y install graphviz swig ethtool pkg-config debhelper autoconf kmod tcl m4 pciutils tk flex automake chrpath libglib2.0-0 lsof gfortran dpatch bison
+
+    # packages needed for MOFED
+    apt-get -y install graphviz swig ethtool pkg-config debhelper autoconf kmod tcl m4 pciutils tk flex automake chrpath libglib2.0-0 lsof gfortran dpatch bison libnl-3-200 libnuma1 libnl-route-3-200
 
     # get scientific libraries from package manager
     apt-get -y install libgsl-dev libbz2-dev libhdf5-dev
@@ -50,14 +52,3 @@ From: debian:9.6
     ./configure --enable-mpi --enable-type-prefix
     make
     make install
-    cd ..
-
-    # get N-GenIC
-    wget http://wwwmpa.mpa-garching.mpg.de/gadget/n-genic.tar.gz && tar -xzf n-genic.tar.gz && cd N-GenIC
-    make
-    make install
-    cd ..
-
-    # get GADGET 2
-    git clone https://github.com/vrastil/Fast-Gadget.git && cd Fast-Gadget/Gadget-2.0.7/Gadget2
-    

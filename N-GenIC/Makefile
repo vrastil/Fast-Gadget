@@ -9,7 +9,7 @@ INCL   = allvars.h proto.h    Makefile
 #OPT	+=  -DPRODUCEGAS   # Set this to automatically produce gas particles 
                          # for a single DM species in the input file by interleaved by a half a grid spacing
 
-OPT	+=  -DNO64BITID    # switch this on if you want normal 32-bit IDs
+#OPT	+=  -DNO64BITID    # switch this on if you want normal 32-bit IDs
 #OPT	+=  -DCORRECT_CIC  # only switch this on if particles are homogenously distributed over mesh cells (say glass)
 
 
@@ -27,13 +27,12 @@ OPTIONS =  $(OPT)
 #SYSTYPE="OPA-Cluster64-Intel"
 
 # module load mvapich2-1.2-sdr-gnu/4.1.2
-SYSTYPE="OPA-Cluster64-Gnu"
+#SYSTYPE="OPA-Cluster64-Gnu"
 
+SYSTYPE=Singularity
 
-
-FFTW_INCL = -I/usr/common/pdsoft/include
-FFTW_LIBS = -L/usr/common/pdsoft/lib
-
+# FFTW_INCL = -I/usr/common/pdsoft/include
+# FFTW_LIBS = -L/usr/common/pdsoft/lib
 
 CC       =   mpicc        # sets the C-compiler (default)
 OPTIMIZE =   -O3 -Wall    # optimization and warning flags (default)
@@ -132,7 +131,14 @@ FFTW_INCL= -I/opt/local/include
 FFTW_LIBS= -L/opt/local/lib/sparcv9
 endif
 
-
+ifeq ($(SYSTYPE),"Singularity")
+CC       =  mpiccg
+OPTIMIZE =  -Wall -g -O3 -march=native -mtune=native
+GSL_INCL =
+GSL_LIBS =
+FFTW_INCL=
+FFTW_LIBS=
+endif
 
 FFTW_LIB =  $(FFTW_LIBS) -ldrfftw_mpi -ldfftw_mpi -ldrfftw -ldfftw
 

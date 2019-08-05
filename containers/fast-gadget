@@ -1,0 +1,15 @@
+BootStrap: library
+From: vrastil/default/fast_gadget_base
+
+%help
+    Build Fast-Gadget
+
+%post
+    # get N-GenIC
+    cd /data
+    git clone https://github.com/vrastil/Fast-Gadget.git && cd Fast-Gadget/N-GenIC
+    make
+
+    # get GADGET 2
+    cd ../Gadget-2.0.7/Gadget2
+    make
