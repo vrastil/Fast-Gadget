@@ -10,7 +10,7 @@
 
 #--------------------------------------- Basic operation mode of code
 OPT   +=  -DPERIODIC 
-OPT   +=  -DUNEQUALSOFTENINGS
+#OPT   +=  -DUNEQUALSOFTENINGS
 
 
 #--------------------------------------- Things that are always recommended
@@ -39,8 +39,8 @@ OPT   +=  -DSYNCHRONIZATION
 #OPT   +=  -DNOPMSTEPADJUSTMENT
 
 
-#--------------------------------------- Output 
-OPT   +=  -DHAVE_HDF5  
+#--------------------------------------- Output options
+OPT   +=  -DHAVE_HDF5
 #OPT   +=  -DOUTPUTPOTENTIAL
 #OPT   +=  -DOUTPUTACCELERATION
 #OPT   +=  -DOUTPUTCHANGEOFENTROPY
@@ -59,8 +59,7 @@ OPT   +=  -DHAVE_HDF5
 #OPT   +=  -DNOVISCOSITYLIMITER
 #OPT   +=  -DCOMPUTE_POTENTIAL_ENERGY
 #OPT   +=  -DLONGIDS
-#OPT   +=  -DISOTHERM_EQS
-#OPT   +=  -DADAPTIVE_GRAVSOFT_FORGAS
+#OPT   +=  -DISOTHERMAL
 #OPT   +=  -DSELECTIVE_NO_GRAVITY=2+4+8+16
 
 #--------------------------------------- Testing and Debugging options
@@ -86,15 +85,13 @@ MPICHLIB =  -lmpich
 
 #--------------------------------------- Select target computer
 
-SYSTYPE="MPA"
+#SYSTYPE="MPA"
 #SYSTYPE="Mako"
 #SYSTYPE="Regatta"
 #SYSTYPE="RZG_LinuxCluster"
 #SYSTYPE="RZG_LinuxCluster-gcc"
-#SYSTYPE="OpteronMPA"
-#SYSTYPE="OPA-Cluster32"
-#SYSTYPE="OPA-Cluster64"
-
+#SYSTYPE="Opteron"
+SYSTYPE=Singularity
 
 #--------------------------------------- Adjust settings for target computer
 
@@ -102,51 +99,25 @@ ifeq ($(SYSTYPE),"MPA")
 CC       =  mpicc   
 OPTIMIZE =  -O3 -Wall
 GSL_INCL =  -I/usr/common/pdsoft/include
-GSL_LIBS =  -L/usr/common/pdsoft/lib  -Wl,"-R /usr/common/pdsoft/lib"
+GSL_LIBS =  -L/usr/common/pdsoft/lib
 FFTW_INCL= 
 FFTW_LIBS= 
 MPICHLIB =
-HDF5INCL =  
-HDF5LIB  =  -lhdf5 -lz 
+HDF5INCL =  -I/opt/hdf5/include
+HDF5LIB  =  -L/opt/hdf5/lib -static -lhdf5 -lz 
 endif
 
 
-ifeq ($(SYSTYPE),"OpteronMPA")
+ifeq ($(SYSTYPE),"Opteron")
 CC       =  mpicc   
 OPTIMIZE =  -O3 -Wall -m64
 GSL_INCL =  -L/usr/local/include
-GSL_LIBS =  -L/usr/local/lib 
+GSL_LIBS =  -L/usr/local/lib -static
 FFTW_INCL=
 FFTW_LIBS=
 MPICHLIB =
 HDF5INCL =  -I/opt/hdf5/include
-HDF5LIB  =  -L/opt/hdf5/lib -lhdf5 -lz  -Wl,"-R /opt/hdf5/lib"
-endif
-
-
-ifeq ($(SYSTYPE),"OPA-Cluster32")
-CC       =  mpicc   
-OPTIMIZE =  -O3 -Wall 
-GSL_INCL =  -I/afs/rzg/bc-b/vrs/opteron32/include
-GSL_LIBS =  -L/afs/rzg/bc-b/vrs/opteron32/lib  -Wl,"-R /afs/rzg/bc-b/vrs/opteron32/lib"
-FFTW_INCL=  -I/afs/rzg/bc-b/vrs/opteron32/include
-FFTW_LIBS=  -L/afs/rzg/bc-b/vrs/opteron32/lib 
-MPICHLIB =
-HDF5INCL =  
-HDF5LIB  =  -lhdf5 -lz 
-endif
-
-
-ifeq ($(SYSTYPE),"OPA-Cluster64")
-CC       =  mpicc   
-OPTIMIZE =  -O3 -Wall -m64
-GSL_INCL =  -I/afs/rzg/bc-b/vrs/opteron64/include
-GSL_LIBS =  -L/afs/rzg/bc-b/vrs/opteron64/lib  -Wl,"-R /afs/rzg/bc-b/vrs/opteron64/lib"
-FFTW_INCL=  -I/afs/rzg/bc-b/vrs/opteron64/include
-FFTW_LIBS=  -L/afs/rzg/bc-b/vrs/opteron64/lib 
-MPICHLIB =
-HDF5INCL =  
-HDF5LIB  =  -lhdf5 -lz 
+HDF5LIB  =  -L/opt/hdf5/lib -static -lhdf5 -lz
 endif
 
 
@@ -158,8 +129,6 @@ GSL_LIBS =
 FFTW_INCL= 
 FFTW_LIBS= 
 MPICHLIB =
-HDF5INCL =  
-HDF5LIB  =  -lhdf5 -lz 
 endif
 
 
@@ -180,11 +149,11 @@ ifeq ($(SYSTYPE),"RZG_LinuxCluster")
 CC       =  mpicci   
 OPTIMIZE =  -O3 -ip     # Note: Don't use the "-rcd" optimization of Intel's compiler! (causes code crashes)
 GSL_INCL =  -I/afs/rzg/u/vrs/gsl_linux/include
-GSL_LIBS =  -L/afs/rzg/u/vrs/gsl_linux/lib  -Wl,"-R /afs/rzg/u/vrs/gsl_linux/lib"
+GSL_LIBS =  -L/afs/rzg/u/vrs/gsl_linux/lib -static
 FFTW_INCL=  -I/afs/rzg/u/vrs/fftw_linux/include
 FFTW_LIBS=  -L/afs/rzg/u/vrs/fftw_linux/lib
 HDF5INCL =  -I/afs/rzg/u/vrs/hdf5_linux/include
-HDF5LIB  =  -L/afs/rzg/u/vrs/hdf5_linux/lib -lhdf5 -lz  -Wl,"-R /afs/rzg/u/vrs/hdf5_linux/lib"
+HDF5LIB  =  -L/afs/rzg/u/vrs/hdf5_linux/lib -static  -lhdf5 -L/afs/rzg/u/vrs/zlib_linux/lib -lz 
 endif
 
 
@@ -192,11 +161,22 @@ ifeq ($(SYSTYPE),"RZG_LinuxCluster-gcc")
 CC       =  mpiccg
 OPTIMIZE =  -Wall -g -O3 -march=pentium4
 GSL_INCL =  -I/afs/rzg/u/vrs/gsl_linux_gcc3.2/include
-GSL_LIBS =  -L/afs/rzg/u/vrs/gsl_linux_gcc3.2/lib  -Wl,"-R /afs/rzg/u/vrs/gsl_linux_gcc3.2/lib"
+GSL_LIBS =  -L/afs/rzg/u/vrs/gsl_linux_gcc3.2/lib
 FFTW_INCL=  -I/afs/rzg/u/vrs/fftw_linux_gcc3.2/include
 FFTW_LIBS=  -L/afs/rzg/u/vrs/fftw_linux_gcc3.2/lib  
 HDF5INCL =  -I/afs/rzg/u/vrs/hdf5_linux/include
-HDF5LIB  =  -L/afs/rzg/u/vrs/hdf5_linux/lib  -lhdf5 -lz  -Wl,"-R /afs/rzg/u/vrs/hdf5_linux/lib"
+HDF5LIB  =  -L/afs/rzg/u/vrs/hdf5_linux/lib -static  -lhdf5 -L/afs/rzg/u/vrs/zlib_linux/lib -lz 
+endif
+
+ifeq ($(SYSTYPE),"Singularity")
+CC       =  mpiccg
+OPTIMIZE =  -Wall -g -O3 -march=native -mtune=native
+# GSL_INCL =  -I/afs/rzg/u/vrs/gsl_linux_gcc3.2/include
+# GSL_LIBS =  -L/afs/rzg/u/vrs/gsl_linux_gcc3.2/lib
+# FFTW_INCL=  -I/afs/rzg/u/vrs/fftw_linux_gcc3.2/include
+# FFTW_LIBS=  -L/afs/rzg/u/vrs/fftw_linux_gcc3.2/lib  
+# HDF5INCL =  -I/afs/rzg/u/vrs/hdf5_linux/include
+# HDF5LIB  =  -L/afs/rzg/u/vrs/hdf5_linux/lib -static  -lhdf5 -L/afs/rzg/u/vrs/zlib_linux/lib -lz 
 endif
 
 
@@ -455,19 +435,10 @@ clean:
 #     64-bit long integers. This is only really needed if you want to
 #     go beyond ~2 billion particles.
 #
-# - ISOTHERM_EQS:
-#     This special option makes the gas behave like an isothermal gas
-#     with equation of state P = cs^2 * rho. The sound-speed cs is set by 
-#     the thermal energy per unit mass in the intial conditions, 
-#     i.e. cs^2=u. If the value for u is zero, then the initial gas 
-#     temperature in the parameter file is used to define the sound speed
-#     according to cs^2 = 3/2 kT/mp, where mp is the proton mass.
-#
-# - ADAPTIVE_GRAVSOFT_FORGAS:
-#     When this option is set, the gravitational softening lengths used for
-#     gas particles is tied to their SPH smoothing length. This can be useful
-#     for dissipative collapse simulations. The option requires the setting
-#     of UNEQUALSOFTENINGS.
+# - ISOTHERMAL:
+#     This special option makes the gas behave like an isothermal gas.
+#     The corresponding temperature is set by the parameter MinGasTemp
+#     in the parameterfile.
 #
 # - SELECTIVE_NO_GRAVITY:
 #     This can be used for special computations where one wants to 
