@@ -91,7 +91,7 @@ MPICHLIB =  -lmpich
 #SYSTYPE="RZG_LinuxCluster"
 #SYSTYPE="RZG_LinuxCluster-gcc"
 #SYSTYPE="Opteron"
-SYSTYPE=Singularity
+SYSTYPE="Singularity"
 
 #--------------------------------------- Adjust settings for target computer
 
@@ -169,14 +169,15 @@ HDF5LIB  =  -L/afs/rzg/u/vrs/hdf5_linux/lib -static  -lhdf5 -L/afs/rzg/u/vrs/zli
 endif
 
 ifeq ($(SYSTYPE),"Singularity")
-CC       =  mpiccg
+CC       =  mpicc
 OPTIMIZE =  -Wall -g -O3 -march=native -mtune=native
 GSL_INCL =
 GSL_LIBS =
 FFTW_INCL=
 FFTW_LIBS=
-HDF5INCL =
-HDF5LIB  =
+MPICHLIB =
+HDF5INCL = -I/usr/include/hdf5/serial/
+HDF5LIB  = -lhdf5_serial -lz
 endif
 
 

@@ -29,7 +29,7 @@ OPTIONS =  $(OPT)
 # module load mvapich2-1.2-sdr-gnu/4.1.2
 #SYSTYPE="OPA-Cluster64-Gnu"
 
-SYSTYPE=Singularity
+SYSTYPE="Singularity"
 
 # FFTW_INCL = -I/usr/common/pdsoft/include
 # FFTW_LIBS = -L/usr/common/pdsoft/lib
@@ -132,12 +132,13 @@ FFTW_LIBS= -L/opt/local/lib/sparcv9
 endif
 
 ifeq ($(SYSTYPE),"Singularity")
-CC       =  mpiccg
-OPTIMIZE =  -Wall -g -O3 -march=native -mtune=native
+CC       =  mpicc
+OPTIMIZE =  -O3 -march=native -mtune=native
 GSL_INCL =
 GSL_LIBS =
 FFTW_INCL=
 FFTW_LIBS=
+MPICHLIB =
 endif
 
 FFTW_LIB =  $(FFTW_LIBS) -ldrfftw_mpi -ldfftw_mpi -ldrfftw -ldfftw
