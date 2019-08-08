@@ -81,6 +81,7 @@ OPT   +=  -DHAVE_HDF5
 CC       =  mpicc               # sets the C-compiler
 OPTIMIZE =  -O2 -Wall -g        # sets optimization and warning flags
 MPICHLIB =  -lmpich
+DESTDIR = /usr/local/
 
 
 #--------------------------------------- Select target computer
@@ -224,7 +225,10 @@ $(EXEC): $(OBJS)
 
 $(OBJS): $(INCL) 
 
+install: $(EXEC)
+	cp $(EXEC) $(DESTDIR)/bin/
 
+.PHONY : clean install
 clean:
 	rm -f $(OBJS) $(EXEC)
 

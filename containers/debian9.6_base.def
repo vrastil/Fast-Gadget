@@ -33,10 +33,7 @@ From: debian:9.6
     wget http://content.mellanox.com/ofed/${MOFED_SITE_PLACE}/${MOFED_IMAGE}
     tar -xzf ${MOFED_IMAGE}
     ${MOFED_DIR}/mlnxofedinstall --user-space-only --without-fw-update --all -q
-
     cd ..
-    rm -rf ${MOFED_DIR}
-    rm -f ${MOFED_IMAGE}
 
     # get OpenMPI
     apt-get -y install libopenmpi-dev
@@ -52,3 +49,9 @@ From: debian:9.6
     ./configure --enable-mpi --enable-type-prefix
     make
     make install
+    cd ..
+
+    # cleanup
+    rm -rf fftw-2.1.5
+    rm -rf ${MOFED_DIR}
+    rm -f ${MOFED_IMAGE}

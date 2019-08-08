@@ -9,7 +9,13 @@ From: vrastil/default/fast_gadget_base
     cd /data
     git clone https://github.com/vrastil/Fast-Gadget.git && cd Fast-Gadget/N-GenIC
     make
+    make install
 
     # get GADGET 2
     cd ../Gadget-2.0.7/Gadget2
     make
+    make install
+
+    # prepare workflow
+
+    # cleanup

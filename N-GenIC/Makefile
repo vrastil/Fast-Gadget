@@ -37,6 +37,7 @@ SYSTYPE="Singularity"
 CC       =   mpicc        # sets the C-compiler (default)
 OPTIMIZE =   -O3 -Wall    # optimization and warning flags (default)
 MPICHLIB =  -lmpich
+DESTDIR = /usr/local/
 
 
 ifeq ($(SYSTYPE),"OpenSuse")
@@ -158,8 +159,10 @@ $(EXEC): $(OBJS)
 
 $(OBJS): $(INCL) 
 
+install: $(EXEC)
+	cp $(EXEC) $(DESTDIR)/bin/
 
-.PHONY : clean
+.PHONY : clean install
 clean:
 	rm -f $(OBJS) $(EXEC)
 
